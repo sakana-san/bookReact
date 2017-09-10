@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ReactPractice</title>
+  <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+  <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  update()
+  function update () {
+    const day = new Date()
+    const h = z(day.getHours())
+    const m = z(day.getMinutes())
+    const s = z(day.getSeconds())
+    const binStr = h + m + s
+    const styleA = {color: 'brown'}
+    const styleB = {color: 'red'}
+    const lines = []
+    for (let i=0;i<binStr.length;i++) {
+      const v = parseInt(binStr.substr(i, 1))
+      const bin = '0000' + v.toString(2)
+      console.log(bin)
+      const bin8 = bin.substr(bin.length - 4, 4)
+      for (let j=0;j<bin8.length;j++) {
+        if (bin8.substr(j, 1) === '0') {
+          lines.push(<span style={styleA}>○</span>)
+        } else {
+          lines.push(<span style={styleB}>●</span>)
+        }
+      }
+      lines.push(<br />)
+    }
+    const elem = (<div>
+      { lines }
+    </div>)
+    setTimeout(update, 1000)
+    ReactDOM.render(
+      elem,
+      document.getElementById('root')
+    )
+  }
+  function z (v) {
+    v = String('00' + v)
+    return v.substr((v.length - 2), 2)
+  }
+</script>
+</body>
+</html>
