@@ -15,11 +15,13 @@
   <script type="text/babel">
     showClock()
     function showClock () {
-      const day = new Date()
-      const hour = day.getHours()
-      const min = day.getMinutes()
-      const sec = day.getSeconds()
-      const elem = <div>{hour}:{min}:{sec}</div>
+      const date = new Date()
+      const hour = date.getHours()
+      const min = date.getMinutes()
+      const sec = date.getSeconds()
+      const elem = <div>
+        {hour}:{min}:{sec}
+        </div>
       setTimeout(showClock, 1000)
       ReactDOM.render(
         elem,
