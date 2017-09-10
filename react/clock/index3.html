@@ -15,20 +15,21 @@
 <script type="text/babel">
   update()
   function update () {
-    const day = new Date()
-    const h = z(day.getHours())
-    const m = z(day.getMinutes())
-    const s = z(day.getSeconds())
-    const binStr = h + m + s
+    const date = new Date()
+    const h = z(date.getHours())
+    const m = z(date.getMinutes())
+    const s = z(date.getSeconds())
     const styleA = {color: 'brown'}
     const styleB = {color: 'red'}
+    const binStr = h + m + s
     const lines = []
-    for (let i=0;i<binStr.length;i++) {
+    for (let i=0; i < binStr.length; i++) {
+      // 現在時刻の数字をsubstrで一つずつ取得
       const v = parseInt(binStr.substr(i, 1))
+      //円を0000で表示するために'0000'かつ、toStoring(2)で2進法に変換
       const bin = '0000' + v.toString(2)
-      console.log(bin)
-      const bin8 = bin.substr(bin.length - 4, 4)
-      for (let j=0;j<bin8.length;j++) {
+      const bin8 = bin.substr((bin.length - 4), 4)
+      for (let j = 0; j < bin8.length; j++) {
         if (bin8.substr(j, 1) === '0') {
           lines.push(<span style={styleA}>○</span>)
         } else {
@@ -37,9 +38,9 @@
       }
       lines.push(<br />)
     }
-    const elem = (<div>
-      { lines }
-    </div>)
+    const elem = (
+      <div>{ lines }</div>
+    )
     setTimeout(update, 1000)
     ReactDOM.render(
       elem,
@@ -47,8 +48,8 @@
     )
   }
   function z (v) {
-    v = String('00' + v)
-    return v.substr((v.length - 2), 2)
+    let s = '00' + v
+     return s.substr((s.length - 2), 2)
   }
 </script>
 </body>
