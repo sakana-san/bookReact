@@ -13,43 +13,39 @@
 <body>
 <div id="root"></div>
 <script type="text/babel">
-  update()
-  function update () {
-    const date = new Date()
-    const h = z(date.getHours())
-    const m = z(date.getMinutes())
-    const s = z(date.getSeconds())
-    const styleA = {color: 'brown'}
-    const styleB = {color: 'red'}
-    const binStr = h + m + s
+  showOclock()
+
+  function showOclock() {
     const lines = []
-    for (let i=0; i < binStr.length; i++) {
-      // 現在時刻の数字をsubstrで一つずつ取得
-      const v = parseInt(binStr.substr(i, 1))
-      //円を0000で表示するために'0000'かつ、toStoring(2)で2進法に変換
-      const bin = '0000' + v.toString(2)
-      const bin8 = bin.substr((bin.length - 4), 4)
-      for (let j = 0; j < bin8.length; j++) {
+    const d = new Date()
+    const [hour, min, sec] = [
+      z2(d.getHours()),
+      z2(d.getMinutes()),
+      z2(d.getSeconds())
+    ]
+    const elem = hour + min + sec
+    for (let i=0; i<elem.length;i++) {
+      const number = parseInt(elem.substr(i, 1))
+      const bin = '0000' + number.toString(2)
+      const bin8 = bin.substr(bin.length - 4, 4)
+      for (let j=0; j<bin8.length;j++) {
         if (bin8.substr(j, 1) === '0') {
-          lines.push(<span style={styleA}>○</span>)
+          lines.push(<span>○</span>)
         } else {
-          lines.push(<span style={styleB}>●</span>)
+          lines.push(<span>●</span>)
         }
       }
       lines.push(<br />)
     }
-    const elem = (
-      <div>{ lines }</div>
-    )
-    setTimeout(update, 1000)
+    setTimeout(showOclock, 1000)
     ReactDOM.render(
-      elem,
+            <div>{ lines }</div>,
       document.getElementById('root')
     )
   }
-  function z (v) {
-    let s = '00' + v
-     return s.substr((s.length - 2), 2)
+  function z2 (v) {
+    const modify = '00' + v
+    return modify.substr(modify.length - 2, 2)
   }
 </script>
 </body>

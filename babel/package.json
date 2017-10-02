@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel test.js -o ./dist/test.out.js --source maps",
     "watch": "babel test.js -w -o ./dist/test.out.js",
-    "start": "node test.out.js"
+    "start": "node ./dist/test.out.js"
   },
   "keywords": [],
   "author": "",

@@ -13,37 +13,14 @@
 <body>
   <div id="root"></div>
   <script type="text/babel">
-    class PhotoText extends React.Component {
-      getImage () {
-        return 'img/' + this.props.image + '.jpg'
-      }
-      getLabel () {
-        return this.props.label
-      }
-      css () {
-        return {
-          border: '1px solid silver',
-          margin: '8px',
-          padding: '1px'
-        }
-      }
-      render () {
-        return (
-          <div style={this.css()}>
-            <img src={this.getImage()} width="128"/>
-            <span>{this.getLabel()}</span>
-          </div>
-        )
-      }
-    }
-    ReactDOM.render(
-      <div>
-        <PhotoText image="photo1" label="松島みゆき" />
-        <PhotoText image="photo2" label="土井亜紀" />
-        <PhotoText image="photo3" label="羽田 梓" />
-      </div>,
+   function Greeting(props) {
+     return <h1>{props.type}</h1>
+   }
+   
+   ReactDOM.render (
+      <Greeting type="hello"/>,
       document.getElementById('root')
-    )
+   )
   </script>
 </body>
 </html>

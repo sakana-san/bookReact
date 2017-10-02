@@ -11,23 +11,41 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
 </head>
 <body>
-  <div id="root"></div>
-  <script type="text/babel">
-    showClock()
-    function showClock () {
-      const date = new Date()
+<div id="root"></div>
+<script type="text/babel">
+
+  class Clock extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = {
+        date: new Date()
+      }
+      setInterval(() => {
+        this.setState({date: new Date()})
+      }, 1000)
+    }
+    z (v) {
+      const time = '00' + v
+      return time.substr(time.length - 2, 2)
+    }
+    render () {
+      const date = this.state.date
       const hour = date.getHours()
       const min = date.getMinutes()
       const sec = date.getSeconds()
-      const elem = <div>
-        {hour}:{min}:{sec}
-      </div>
-      setTimeout(showClock, 1000)
-      ReactDOM.render(
-        elem,
-        document.getElementById('root')
+      const elem = this.z(hour) + ':' + this.z(min) + ':' + this.z(sec)
+      return (
+              <div>
+                {elem}
+              </div>
       )
     }
-  </script>
+  }
+
+  ReactDOM.render (
+          <Clock />,
+    document.getElementById('root')
+  )
+</script>
 </body>
 </html>

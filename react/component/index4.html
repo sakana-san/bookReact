@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ReactPractice</title>
+  <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+  <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+  class Title extends React.Component {
+    render () {
+      return (
+        <h2>{ this.props.title }</h2>
+      )
+    }
+  }
+  class Description extends React.Component {
+    render () {
+      return (
+        <p>{ this.props.description }</p>
+      )
+    }
+  }
+
+  class BooksList extends React.Component {
+    render () {
+      return (
+        <div>
+          <Title title={this.props.title} />
+          <Description description={this.props.description} />
+        </div>
+      )
+    }
+  }
+  ReactDOM.render (
+    <div>
+      <BooksList title="三国志" description="昔の中国の話"/>
+      <BooksList title="民数記" description="昔のイスラエルの話"/>
+      <BooksList title="西遊記" description="猿が活躍する話"/>
+    </div>,
+    document.getElementById('root')
+  )
+</script>
+</body>
+</html>

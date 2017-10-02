@@ -1,66 +1,49 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>ReactPractice</title>
-  <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
-  <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
-</head>
-<body>
-  <div id="root"></div>
-  <script type="text/babel">
-    class Rist extends React.Component{
-      render () {
-        return (
-          <div>
-            <Title
-              title={this.props.title}
-            />
-            <Items
-              items={this.props.items}
-            />
-          </div>
-        )
-      }
-    }
-    class Title extends React.Component {
-      render () {
-        const title = this.props.title
-        return (
-          <h3>{title}</h3>
-        )
-      }
-    }
-    class Items extends React.Component {
-      render () {
-        const items = this.props.items.split(',')
-        const Obj = items.map((value) => {
-          return (
-            <li>{ value }</li>
-          )
-        })
-        return (
-          <ul>{ Obj }</ul>
-        )
-      }
-    }
-    ReactDOM.render(
-      <div>
-        <Rist
+
+class Rist extends React.Component{
+render () {
+return (
+<div>
+  <Title
+          title={this.props.title}
+  />
+  <Items
+          items={this.props.items}
+  />
+</div>
+)
+}
+}
+class Title extends React.Component {
+render () {
+const title = this.props.title
+return (
+<h3>{title}</h3>
+)
+}
+}
+class Items extends React.Component {
+render () {
+const items = this.props.items.split(',')
+const Obj = items.map((value) => {
+return (
+<li>{ value }</li>
+)
+})
+return (
+<ul>{ Obj }</ul>
+)
+}
+}
+ReactDOM.render(
+<div>
+  <Rist
           title="好きな女優の役"
           items="松島みゆき, 土井亜紀, 羽田 梓"
-        />
-        <Rist
+  />
+  <Rist
           title="好きな映像"
           items="モテキ, ワニトカゲギス"
-        />
-      </div>,
-      document.getElementById('root')
-    )
-  </script>
-</body>
-</html>
+  />
+</div>,
+document.getElementById('root')
+)

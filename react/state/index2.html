@@ -1,0 +1,50 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ReactPractice</title>
+  <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+  <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+  class Test extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = {
+        text: 'おは'
+      }
+      this.alretClick = this.alretClick.bind(this)
+    }
+    alretClick () {
+      const text = this.state.text
+      const name = this.props.name
+      window.alert(`${text}、${name}`)
+    }
+    render () {
+      const handler = () => alert('')
+      return (
+              <div>
+                <button
+                        onClick={ () => {
+                          this.alretClick()
+                        }}>押下</button>
+              </div>
+      )
+    }
+  }
+
+  ReactDOM.render (
+          <Test name="くじらちゃん" />,
+    document.getElementById('root')
+  )
+</script>
+</body>
+</html>

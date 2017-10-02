@@ -27,3 +27,30 @@ class BMI {
 const result = new BMI(172, 68)
 
 result.print()
+
+
+// 消費税
+// 計算
+// 値段 * 1.08 
+
+// class TAX {
+//   constructor (price) {
+//     this.price = price
+//     this.processing = this.calc()
+//   }
+//   calc () {
+//     return this.price * 1.08
+//   }
+//   print () {
+//     let text = ''
+//     text = this.processing + '円です'
+//     console.log(text)
+//   }
+// }
+
+// let result = new TAX(100)
+// if (typeof result.price === 'number') {
+//   result.print()
+// } else {
+//   console.log('整数を入力してください')
+// }
