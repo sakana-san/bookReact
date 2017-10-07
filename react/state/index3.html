@@ -14,47 +14,62 @@
 <div id="root"></div>
 <script type="text/babel">
 
-  class FruitsList extends React.Component {
+  class Fruits extends React.Component {
     constructor(props) {
       super(props)
       this.state = {
-        checked: false
+        check: false,
+        css: {
+          'font-weight': 'normal'
+        }
       }
       this.handler = this.handler.bind(this)
     }
     handler () {
       this.setState({
-        checked: !this.state.checked
+        check: true,
+        css: {
+          'font-weight': 'bold'
+        }
       })
+      if (this.state.check) {
+        this.setState({
+          check: false,
+          css: {
+            'font-weight': 'normal'
+          }
+        })
+      }
     }
     render () {
-      let bstyle = { fontWeight: 'normal' }
-      if (this.state.checked) {
-        bstyle = { fontWeight: 'bold' }
-      }
+      console.log(this.state.check)
+      let css = this.state.css
       return (
         <div>
-        <ul>
-        <li>
-          <input type="checkbox"
-            onChange={() => {
-            this.handler()
-            }}/><span style={bstyle}>{this.props.type}</span>
-        </li>
-        </ul>
+          <ul>
+            <li style={ css } >
+              <input type="checkbox"
+                onChange={() => {
+                  this.handler()
+                }}
+              />
+              { this.props.title }
+            </li>
+          </ul>
         </div>
       )
     }
   }
 
-  ReactDOM.render (
-    <div>
-      <FruitsList type="Apple"/>
-      <FruitsList type="orenge"/>
-      <FruitsList type="banana"/>
-    </div>,
-    document.getElementById('root')
-  )
+ ReactDOM.render(
+   <div>
+     <Fruits title="Apple"/>
+     <Fruits title="Banana"/>
+     <Fruits title="Orange"/>
+     <Fruits title="Mango"/>
+   </div>,
+   document.getElementById('root')
+ )
 </script>
 </body>
 </html>
