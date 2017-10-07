@@ -13,40 +13,75 @@
 <body>
 <div id="root"></div>
 <script type="text/babel">
-  showOclock()
 
-  function showOclock() {
-    const lines = []
-    const d = new Date()
-    const [hour, min, sec] = [
-      z2(d.getHours()),
-      z2(d.getMinutes()),
-      z2(d.getSeconds())
-    ]
-    const elem = hour + min + sec
-    for (let i=0; i<elem.length;i++) {
-      const number = parseInt(elem.substr(i, 1))
-      const bin = '0000' + number.toString(2)
-      const bin8 = bin.substr(bin.length - 4, 4)
-      for (let j=0; j<bin8.length;j++) {
-        if (bin8.substr(j, 1) === '0') {
-          lines.push(<span>○</span>)
-        } else {
-          lines.push(<span>●</span>)
-        }
+  class Binary extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = {
+        date: new Date()
       }
-      lines.push(<br />)
+      this.timerId = 0
     }
-    setTimeout(showOclock, 1000)
-    ReactDOM.render(
-            <div>{ lines }</div>,
-      document.getElementById('root')
-    )
+    componentWillMount() {
+      let that = this
+      updateTimer()
+      function updateTimer() {
+        that.timerId = setTimeout(() => {
+          that.tick()
+          updateTimer()
+        }, 1000)
+      }
+    }
+    componentWillUnmount () {
+      clearTimeout(this.timerId)
+    }
+    tick () {
+      this.setState({
+        date: new Date()
+      })
+    }
+    disp () {
+      let lines = []
+      let date = this.state.date
+      let [hour, min, sec] = [
+        this.z(date.getHours()),
+        this.z(date.getMinutes()),
+        this.z(date.getSeconds())
+      ]
+      let element = hour + min + sec
+      for(let i=0; i < element.length; i++ ) {
+        let number = parseInt(element.substr(i, 1))
+        let conversionBinary = '0000' + number.toString(2)
+        let BinaryShaping = conversionBinary.substr(conversionBinary.length - 4, 4)
+        for (let j=0; j < BinaryShaping.length; j++) {
+          if (BinaryShaping.substr(j, 1) === '0') {
+            lines.push(<span>○</span>)
+          } else {
+            lines.push(<span>●</span>)
+          }
+        }
+        lines.push(<br />)
+      }
+      return (
+        <p>
+          {lines}
+        </p>
+      )
+    }
+    z (v) {
+      let shaping = '00' + v
+      return shaping.substr(shaping.length - 2, 2)
+    }
+    render () {
+      return (
+        <div>{ this.disp() }</div>
+      )
+    }
   }
-  function z2 (v) {
-    const modify = '00' + v
-    return modify.substr(modify.length - 2, 2)
-  }
+  ReactDOM.render(
+    <Binary />,
+    document.getElementById('root')
+  )
 </script>
 </body>
 </html>
