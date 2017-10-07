@@ -31,20 +31,23 @@
     render () {
       const handler = () => alert('')
       return (
-              <div>
-                <button
-                        onClick={ () => {
-                          this.alretClick()
-                        }}>押下</button>
-              </div>
+        <div>
+          <button
+            onClick={ () => {
+              this.alretClick()
+            }}>
+              押下
+          </button>
+        </div>
       )
     }
   }
 
   ReactDOM.render (
-          <Test name="くじらちゃん" />,
+    <Test name="くじらちゃん" />,
     document.getElementById('root')
   )
+
 </script>
 </body>
 </html>

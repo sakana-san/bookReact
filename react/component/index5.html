@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ReactPractice</title>
+  <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+  <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+  class Rist extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = {
+        typeA: {
+          name: 'わにとかげぎす',
+          image: 'photo3.jpg',
+          act: '羽田さん'
+        },
+        typeB: {
+          name: 'モテキ',
+          image: 'photo2.jpg',
+          act: '土井亜紀'
+        },
+        typeC: {
+          name: 'モテキ',
+          image: 'photo1.jpg',
+          act: '松島みゆき'
+        }
+      }
+    }
+    render () {
+      this.data = this.state
+      let Obj = Object.keys(this.data).map((value, key) => {
+        return (
+          <ul>
+            <li>
+              <div>
+                <h3>{this.data[value].name}</h3>
+                <p style={{'font-weight': 'normal'}}>{this.data[value].act}</p>
+                <img src={'./img/' + this.data[value].image} />
+              </div>
+            </li>
+          </ul>
+        )
+      })
+      return (
+        <div>
+          <h1>{ Obj }</h1>
+        </div>
+      )
+    }
+  }
+  ReactDOM.render(
+          <Rist />,
+    document.getElementById('root')
+  )
+</script>
+</body>
+</html>

@@ -13,37 +13,39 @@
 <body>
 <div id="root"></div>
 <script type="text/babel">
-
-  class Clock extends React.Component {
+  class ShowOclock extends React.Component {
     constructor(props) {
       super(props)
       this.state = {
         date: new Date()
       }
       setInterval(() => {
-        this.setState({date: new Date()})
-      }, 1000)
+        this.setState({
+          date: new Date()
+        })
+      })
+    }
+    display () {
+      let time = this.state.date
+      let hour = time.getHours()
+      let min = time.getMinutes()
+      let sec = time.getSeconds()
+      return <p> {this.z(hour)}:{this.z(min)}:{this.z(sec)} </p>
     }
     z (v) {
-      const time = '00' + v
-      return time.substr(time.length - 2, 2)
+      let shaping = '00' + v
+      return shaping.substr(shaping.length - 2, 2)
     }
     render () {
-      const date = this.state.date
-      const hour = date.getHours()
-      const min = date.getMinutes()
-      const sec = date.getSeconds()
-      const elem = this.z(hour) + ':' + this.z(min) + ':' + this.z(sec)
+      let clock = this.display()
       return (
-              <div>
-                {elem}
-              </div>
+        <div>{ clock }</div>
       )
     }
   }
 
   ReactDOM.render (
-          <Clock />,
+    <ShowOclock />,
     document.getElementById('root')
   )
 </script>
