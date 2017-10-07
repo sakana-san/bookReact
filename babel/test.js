@@ -54,3 +54,31 @@ result.print()
 // } else {
 //   console.log('整数を入力してください')
 // }
+
+// 高校野球
+
+// class BASEBALL {
+//   constructor(Toin, Saibi) {
+//     this.data = {
+//       scoreA: Toin,
+//       scoreB: Saibi,
+//       name: {}
+//     }
+//     this.shaping(this.data.scoreA, this.data.scoreB)
+//   }
+//   shaping (t, s) {
+//     if (t > s) {
+//       return this.data.name = '大阪桐蔭'
+//     } else {
+//       return this.data.name = '済美'
+//     }
+//   }
+//   print () {
+//     let text = '本日の試合は' + this.data.name  + 'が' + this.data.scoreA + '対' + this.data.scoreB + 'で勝ちました';
+//     (this.data.scoreA > this.data.scoreB) ? text : text;
+//     console.log(text)
+//   }
+// }
+//
+// let result = new BASEBALL(6, 0)
+// result.print()
