@@ -1,25 +1,25 @@
 import React from 'react'
 import './StopWatch.css'
 
-
 export default class extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      flag: false,
       startTime: 0,
       currentTime: 0,
+      check: false,
       label: 'START'
     }
+    this.handler = this.handler.bind(this)
     this.timerId = 0
   }
   componentWillMount () {
     let that = this
     updateTimer()
-    function updateTimer () {
+    function updateTimer() {
       that.timerId = setTimeout(function () {
-        that.tick()
         updateTimer()
+        that.tick()
       }, 1000)
     }
   }
@@ -27,51 +27,50 @@ export default class extends React.Component {
     clearTimeout(this.timerId)
   }
   tick () {
-    if (this.state.flag) {
-      const v = Date.now()
+    let time = new Date().getTime()
+    if(this.state.check === true) {
       this.setState({
-        currentTime: v
+        currentTime: time
       })
     }
   }
-  clickHandler () {
-    const flag = this.state.flag
-    if (flag) {
-      this.setState({
-        flag: false,
-        label: 'START'
-      })
-      return
-    }
-    const v = new Date().getTime();
+  handler () {
+    let time = new Date().getTime()
     this.setState({
-      flag: true,
-      startTime: v,
-      currentTime: v,
+      startTime: time,
+      currentTime: time,
+      check: true,
       label: 'STOP'
     })
-  }
-  getDisp () {
-    const s = this.state
-    const diff = s.currentTime - s.startTime
-    const ss = Math.floor((diff / 1000) % 60)
-    const mm = Math.floor((diff / (60 * 1000)) % 60)
-    const hh = Math.floor((diff / (60 * 60 * 1000)) % 24)
-    const z = (num) => {
-      const set = '00' + String(num)
-      return set.substr(set.length - 2, 2)
+    if (this.state.check === true) {
+      this.setState({
+        check: false,
+        label: 'START'
+      })
     }
-    return <span className="disp">
-      {z(hh)}:{z(mm)}:{z(ss)}
-    </span>
+  }
+  z (v) {
+    let shaping = '00' + v
+    return shaping.substr(shaping.length - 2, 2)
+  }
+  timesShaping () {
+    let diff = this.state.currentTime - this.state.startTime
+    let sec = Math.floor((diff / 1000) % 60)
+    let min = Math.floor((diff / (60 * 1000)) % 60)
+    let hour = Math.floor((diff / (60 * 60 * 1000)) % 24)
+    return (
+      <p className="disp">{this.z(hour)}:{this.z(min)}:{this.z(sec)}</p>
+    )
   }
   render () {
+    let label = this.state.label
+    let displayTime = this.timesShaping()
     return (
       <div className="Stopwatch">
-        <p className="disp">{this.getDisp()}</p>
+        { displayTime }
         <button className="button" onClick={() => {
-          this.clickHandler()
-        }}>{ this.state.label }</button>
+          this.handler()
+        }}>{ label }</button>
       </div>
     )
   }
