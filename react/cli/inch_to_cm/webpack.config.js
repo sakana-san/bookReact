@@ -2,6 +2,7 @@ const path = require('path')
 const basedir = __dirname
 
 module.exports = {
+  watch: true,
   entry: path.join(basedir, 'src/index.js'),
   output: {
     path: path.join(basedir, 'out'),
