@@ -5,39 +5,40 @@ import ValueInput from './ValueInput'
 export default class InchToCm extends Component {
   constructor (props) {
     super(props)
-    // ValueInputに表示する値を状態として保持 --- (※1)
     this.state = {
-      inch: 0, cm: 0
+      inch: '',
+      cm: ''
     }
   }
-  // インチが変更されたとき --- (※2)
   inchChanged (e) {
-    const inchValue = e.value
-    const cmValue = inchValue * 2.54
+    let inch = e.dispatch
+    let cm = inch * 2.54
     this.setState({
-      inch: inchValue,
-      cm: cmValue
+      inch: inch,
+      cm: cm
     })
   }
-  // センチが変更されたとき  --- (※3)
   cmChanged (e) {
-    const cmValue = e.value
-    const inchValue = cmValue * 2.54
+    let cm = e.dispatch
+    let inch = cm * 2.54
     this.setState({
-      inch: inchValue,
-      cm: cmValue
+      inch: inch,
+      cm: cm
     })
   }
-  // 画面の描画 --- (※4)
   render () {
     return (
       <div>
-        <ValueInput title='inch'
+        <ValueInput
+          title='inch'
+          value={this.state.inch}
           onChange={e => this.inchChanged(e)}
-          value={this.state.inch} />
-        <ValueInput title='cm'
+        />
+        <ValueInput
+          title='cm'
+          value={this.state.cm}
           onChange={e => this.cmChanged(e)}
-          value={this.state.cm} />
+        />
       </div>
     )
   }

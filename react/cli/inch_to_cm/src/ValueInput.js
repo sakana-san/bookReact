@@ -1,41 +1,47 @@
-import React, {Component} from 'react'
+import React from 'react'
 
-// 数値を入力するコンポーネント
-export default class ValueInput extends Component {
-  constructor (props) {
+export default class extends React.Component {
+  constructor(props) {
     super(props)
-    // プロパティより初期値を設定 --- (※5)
     this.state = {
       value: this.props.value
     }
   }
-  // 値がユーザーにより変更されたとき --- (※6)
-  handleChange (e) {
-    const v = e.target.value
-    // 数値以外を除外
-    const newValue = v.replace(/[^0-9.]+/g, '')
-    // 状態に設定 --- (※7)
-    this.setState({value: newValue})
-    // イベントを実行する --- (※8)
+  handler(e) {
+    let target = e.target.value
+    // 整数しか出さないようにする
+    let shaping = target.replace(/[^0-9.]+/g, '')
+    this.setState({
+      value: shaping
+    })
+    // shaiping変数をpropsで親に渡す
     if (this.props.onChange) {
       this.props.onChange({
         target: this,
-        value: newValue
+        dispatch: shaping
       })
     }
   }
-  // プロパティが変更されたとき --- (※9)
-  componentWillReceiveProps (nextProps) {
-    this.setState({value: nextProps.value})
+  // this.props.onChange の情報が変更されたのをキャッチして、setStateさせる
+  componentWillReceiveProps(newProps) {
+    console.log()
+    this.setState({
+      value: newProps.value
+    })
   }
-  // 描画 --- (※10)
   render () {
-    return (<div>
-      <label>{this.props.title}: <br />
-        <input type='text'
+    console.log(this.state.value)
+    return (
+      <div>
+        <h2>{ this.props.title }</h2>
+        <input
+          type="text"
           value={this.state.value}
-          onChange={e => this.handleChange(e)} />
-      </label>
-    </div>)
+          onChange={(e) => {
+            this.handler(e)
+          }}
+        />
+      </div>
+    )
   }
 }
