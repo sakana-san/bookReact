@@ -4,58 +4,73 @@ class ColorBox extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      colors: ['yellow', 'red', 'blue', 'green', 'pink'],
-      index: 0,
-      bd: ''
+      colors: ['orange', 'blue', 'brown', 'pink', 'red', 'black'],
+      index: 0
     }
   }
   handler (e) {
+    // 押下時に、どの色を選んだかを判別
     let target = e.target.style.backgroundColor
-    let i = this.state.colors.indexOf(target)
+    // 押下した色と、Colorsの配列が一致した番号取得
+    let targetNumber = this.state.colors.indexOf(target)
+    // 押下したタイミングでindexをsetStateしてデータを更新
     this.setState({
-      index: i
+      index: targetNumber
     })
   }
   render () {
-    let current = (this.state.index >= 0) ? this.state.colors[this.state.index] : ''
+    let index = this.state.index
+    let colors = this.state.colors
+    // 配列のcolorsを回してDOMを生成
     let items = this.state.colors.map((d, i) => {
-      let bd = ''
-      console.log('current上', current)
-      console.log('d上', d)
+      // colors[index]とすればクリックした色が取得できる
+      let current = (index >= 0) ? colors[index] : ''
+      // ここで初期値を設定しないと、全要素にborderがついてしまう
+      let design = {
+        border: '',
+        colorName: ''
+      }
+      // colorsにある色とクリックした色が同じなら
       if (d === current) {
-        console.log('current下', current)
-        console.log('d下', d)
-        bd = '2px solid #000'
+        design = {
+          border: '2px solid #000',
+          colorName: d
+        }
       }
-      const cstyle = {
-        color: d,
-        border: bd
-      }
-      console.log(cstyle)
       return (
         <li
           key={i}
-          style={
-            {
-              'backgroundColor': d,
-              'width': '50px',
-              'height': '50px',
-              'cursor': 'pointer',
-            }
-          }
+          style={{
+            'width': '50px',
+            'height': '50px',
+            'backgroundColor': d,
+            'border': design.border,
+            'cursor': 'pointer'
+          }}
           onClick={(e) => {
             this.handler(e)
           }}
-        ></li>
+        >
+          <p
+            style={{
+              'paddingLeft': '70px',
+              'color': design.colorName
+            }}
+          >
+            { design.colorName }
+          </p>
+        </li>
       )
     })
     return (
-      <ul>
-        {items}
-      </ul>
+       <ul>
+         { items}
+       </ul>
     )
   }
 }
+
+
 
 export default class extends React.Component {
   render () {
