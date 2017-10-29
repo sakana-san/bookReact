@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ReactPractice</title>
+  <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+  <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+   class PostalCode extends React.Component {
+     constructor(props) {
+       super(props)
+       this.state = {
+         label: '郵便番号',
+         code: 0,
+         flag: false,
+         checkCode: ''
+       }
+     }
+     handler (e) {
+       let shaping = e.target.value.match(/\d{3}-?\d{4}/)
+       if (shaping)  {
+         this.setState({
+           code: shaping,
+           checkCode: 'OK',
+           cssStyle: {
+             'display': 'inline-block',
+             'width': '50px',
+             'height': '50px',
+             'marginLeft': '10px',
+             'backgroundColor': 'green',
+             'lineHeight': '50px',
+             'textAlign': 'center'
+           }
+         })
+       } else {
+         this.setState({
+           code: '',
+           checkCode: 'NG',
+           cssStyle: {
+             'display': 'inline-block',
+             'width': '50px',
+             'height': '50px',
+             'marginLeft': '10px',
+             'backgroundColor': 'red',
+             'lineHeight': '50px',
+             'textAlign': 'center'
+           }
+         })
+       }
+     }
+     render () {
+       return(
+         <div>
+           <p>{ this.state.label }</p>
+           <input type="text"
+              onChange={(e) => {
+                this.handler(e)
+              }}
+           />
+           <span
+            style={this.state.cssStyle}
+           >{ this.state.checkCode }</span>
+         </div>
+       )
+     }
+   }
+   
+   ReactDOM.render (
+      <PostalCode />,
+      document.getElementById('root')
+   )
+  </script>
+</body>
+</html>
