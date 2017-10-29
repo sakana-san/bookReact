@@ -24,13 +24,11 @@ export default class extends React.Component {
   }
   // this.props.onChange の情報が変更されたのをキャッチして、setStateさせる
   componentWillReceiveProps(newProps) {
-    console.log()
     this.setState({
       value: newProps.value
     })
   }
   render () {
-    console.log(this.state.value)
     return (
       <div>
         <h2>{ this.props.title }</h2>
