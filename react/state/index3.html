@@ -13,63 +13,145 @@
 <body>
 <div id="root"></div>
 <script type="text/babel">
-
-  class Fruits extends React.Component {
+  class Box extends React.Component {
     constructor(props) {
       super(props)
       this.state = {
-        check: false,
-        css: {
-          'font-weight': 'normal'
-        }
+        index: 0,
+        fruits: ['Apple', 'Orange', 'Banana', 'Mango'],
+        flag: false
       }
-      this.handler = this.handler.bind(this)
     }
-    handler () {
+    handler (d) {
+      let targetIndex = this.state.fruits.indexOf(d)
       this.setState({
-        check: true,
-        css: {
-          'font-weight': 'bold'
-        }
+        index: targetIndex,
+        flag: true
       })
-      if (this.state.check) {
-        this.setState({
-          check: false,
-          css: {
-            'font-weight': 'normal'
-          }
-        })
-      }
     }
     render () {
-      console.log(this.state.check)
-      let css = this.state.css
+      let items = this.state.fruits.map((d, i) => {
+        let target = ''
+        let cssStyle = {
+          'cursor': 'pointer'
+        }
+        target = (i >= 0 && this.state.flag === true) ? this.state.fruits[this.state.index] : ''
+        if (d === target) {
+          cssStyle = {
+            'color': 'red'
+          }
+        }
+        return (
+          <li
+            key={i}
+            style={cssStyle}
+            onClick={(e) => {
+              this.handler(d)
+            }}
+          >
+            {d}
+          </li>
+        )
+      })
       return (
-        <div>
-          <ul>
-            <li style={ css } >
-              <input type="checkbox"
-                onChange={() => {
-                  this.handler()
-                }}
-              />
-              { this.props.title }
-            </li>
-          </ul>
-        </div>
+        <ul>
+          { items }
+        </ul>
       )
     }
   }
 
- ReactDOM.render(
-   <div>
-     <Fruits title="Apple"/>
-     <Fruits title="Banana"/>
-     <Fruits title="Orange"/>
-     <Fruits title="Mango"/>
-   </div>,
-   document.getElementById('root')
- )
+  class Fruits extends React.Component {
+    render () {
+        return (
+          <div>
+           <Box />
+          </div>
+        )
+    }
+  }
+
+  ReactDOM.render(
+  <Fruits />,
+  document.getElementById('root')
+  )
 </script>
 </body>
 </html>
+
+
+<!--<!doctype html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+  <!--<meta charset="UTF-8">-->
+  <!--<meta name="viewport"-->
+        <!--content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta http-equiv="X-UA-Compatible" content="ie=edge">-->
+  <!--<title>ReactPractice</title>-->
+  <!--<script src="https://unpkg.com/react@15/dist/react.min.js"></script>-->
+  <!--<script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>-->
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="root"></div>-->
+<!--<script type="text/babel">-->
+
+  <!--class Fruits extends React.Component {-->
+    <!--constructor(props) {-->
+      <!--super(props)-->
+      <!--this.state = {-->
+        <!--check: false,-->
+        <!--css: {-->
+          <!--'font-weight': 'normal'-->
+        <!--}-->
+      <!--}-->
+      <!--this.handler = this.handler.bind(this)-->
+    <!--}-->
+    <!--handler () {-->
+      <!--this.setState({-->
+        <!--check: true,-->
+        <!--css: {-->
+          <!--'font-weight': 'bold'-->
+        <!--}-->
+      <!--})-->
+      <!--if (this.state.check) {-->
+        <!--this.setState({-->
+          <!--check: false,-->
+          <!--css: {-->
+            <!--'font-weight': 'normal'-->
+          <!--}-->
+        <!--})-->
+      <!--}-->
+    <!--}-->
+    <!--render () {-->
+      <!--console.log(this.state.check)-->
+      <!--let css = this.state.css-->
+      <!--return (-->
+        <!--<div>-->
+          <!--<ul>-->
+            <!--<li style={ css } >-->
+              <!--<input type="checkbox"-->
+                <!--onChange={() => {-->
+                  <!--this.handler()-->
+                <!--}}-->
+              <!--/>-->
+              <!--{ this.props.title }-->
+            <!--</li>-->
+          <!--</ul>-->
+        <!--</div>-->
+      <!--)-->
+    <!--}-->
+  <!--}-->
+
+ <!--ReactDOM.render(-->
+   <!--<div>-->
+     <!--<Fruits title="Apple"/>-->
+     <!--<Fruits title="Banana"/>-->
+     <!--<Fruits title="Orange"/>-->
+     <!--<Fruits title="Mango"/>-->
+   <!--</div>,-->
+   <!--document.getElementById('root')-->
+ <!--)-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->

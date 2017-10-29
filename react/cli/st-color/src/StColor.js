@@ -3,81 +3,69 @@ import React from 'react'
 class ColorBox extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      colors: ['orange', 'blue', 'brown', 'pink', 'red', 'black'],
-      index: 0
+    this. state = {
+      index: 0,
+      colors: ['red', 'blue', 'green', 'pink', 'yellow'],
+      flag: false
     }
   }
-  handler (e) {
-    // 押下時に、どの色を選んだかを判別
-    let target = e.target.style.backgroundColor
-    // 押下した色と、Colorsの配列が一致した番号取得
-    let targetNumber = this.state.colors.indexOf(target)
+  handler (color) {
+    let i = this.state.colors.indexOf(color)
     // 押下したタイミングでindexをsetStateしてデータを更新
     this.setState({
-      index: targetNumber
+      index: i,
+      flag: true,
     })
   }
   render () {
-    let index = this.state.index
-    let colors = this.state.colors
-    // 配列のcolorsを回してDOMを生成
     let items = this.state.colors.map((d, i) => {
-      // colors[index]とすればクリックした色が取得できる
-      let current = (index >= 0) ? colors[index] : ''
-      // ここで初期値を設定しないと、全要素にborderがついてしまう
-      let design = {
+      // ここで初期値設定しないと、全要素にborderがついてしまう
+      let checkStyle = {
+        target: '',
         border: '',
-        colorName: ''
+        label: ''
       }
-      // colorsにある色とクリックした色が同じなら
-      if (d === current) {
-        design = {
-          border: '2px solid #000',
-          colorName: d
-        }
+      checkStyle.target =  (i >= 0 && this.state.flag === true) ? this.state.colors[this.state.index] : ''
+      if (d === checkStyle.target) {
+        checkStyle.border = '2px solid #000'
+        checkStyle.label = d
       }
       return (
-        <li
-          key={i}
-          style={{
-            'width': '50px',
-            'height': '50px',
-            'backgroundColor': d,
-            'border': design.border,
-            'cursor': 'pointer'
+      <li
+        key = {i}
+        style = {{
+          'width': '50px',
+          'height': '50px',
+          'backgroundColor': d,
+          'border': checkStyle.border,
+          'cursor': 'pointer'
+        }}
+        onClick={() => {
+          this.handler(d)
+        }}
+      >
+        <p
+          style = {{
+            'marginLeft': '60px',
+            'color': d,
           }}
-          onClick={(e) => {
-            this.handler(e)
-          }}
-        >
-          <p
-            style={{
-              'paddingLeft': '70px',
-              'color': design.colorName
-            }}
-          >
-            { design.colorName }
-          </p>
-        </li>
+        >{ checkStyle.label }</p>
+      </li>
       )
     })
     return (
-       <ul>
-         { items}
-       </ul>
+      <ul>
+        { items }
+      </ul>
     )
   }
 }
 
 
-
 export default class extends React.Component {
   render () {
     return (
-      <div>
-        <ColorBox />
-      </div>
+      <ColorBox />
     )
   }
 }
