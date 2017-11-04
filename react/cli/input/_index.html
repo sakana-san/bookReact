@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ReactPractice</title>
+  <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+  <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  // <input type="text">をcomponentにした組み方
+  class InputPostalCode extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = {
+        code: this.props.value,
+      }
+    }
+    handler (e) {
+      let numberShaping = e.target.value.replace(/[^0-9-]+/g, '')
+      let shaping = /^\d{3}-\d{4}$/
+      this.setState({
+        code: shaping.test(numberShaping)
+      })
+      if (this.props.onChange) {
+        this.props.onChange({
+          dispacth: shaping.test(numberShaping)
+        })
+      }
+    }
+    componentWillReceiveProps(newProps) {
+      this.setState({
+        code: newProps.value
+      })
+    }
+    render () {
+      return (
+        <input type="text"
+          onChange={(e) => {
+            this.handler(e)
+          }}
+        />
+      )
+    }
+  }
+
+  class PostalCode extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = {
+        flag: false,
+        code: '',
+      }
+    }
+    handler (e) {
+      let dispatch = e.dispacth
+      this.setState({
+        code: dispatch,
+        flag: true
+      })
+    }
+    checkMessage () {
+      let check = null
+      let checkCss = null
+      if (this.state.flag) {
+        if (this.state.code) {
+          check = 'OK'
+          checkCss = {
+            'padding': '50px',
+            'backgroundColor': 'green'
+          }
+        } else {
+          check = 'NG'
+          checkCss = {
+            'padding': '50px',
+            'backgroundColor': 'red'
+          }
+        }
+      }
+      return (
+        <span style={checkCss}>
+          {check}
+        </span>
+      )
+    }
+    render () {
+      let checkMessage = this.checkMessage()
+      return(
+        <div>
+          <p>郵便番号</p>
+          <InputPostalCode
+            value={ this.state.code }
+            onChange={(e) => {
+              this.handler(e)
+            }}
+          />
+          { checkMessage }
+        </div>
+      )
+    }
+  }
+
+  ReactDOM.render (
+    <PostalCode />,
+    document.getElementById('root')
+  )
+
+</script>
+</body>
+</html>
