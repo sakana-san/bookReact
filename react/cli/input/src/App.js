@@ -1,5 +1,6 @@
 import React  from 'react';
 import InputPostalCode from './input'
+import MultiInputPostalCode from './multi/input'
 import './App.css'
 
 class App extends React.Component {
@@ -7,6 +8,9 @@ class App extends React.Component {
     return (
       <div className="App">
         <InputPostalCode />
+        <div className="multi">
+          <MultiInputPostalCode />
+        </div>
       </div>
     );
   }

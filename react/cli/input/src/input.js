@@ -18,7 +18,7 @@ export default class extends React.Component {
   render () {
     return(
       <div>
-        <p>郵便番号2</p>
+        <p>郵便番号</p>
         <input
           type="text"
           onChange={(e) => {
