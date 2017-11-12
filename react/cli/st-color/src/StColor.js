@@ -98,7 +98,8 @@ export default class extends React.Component {
   constructor(props) {
     super(props)
     this.state ={
-      color: ['red', 'yellow', 'Orange', 'green']
+      color: ['red', 'yellow', 'Orange', 'green'],
+      addColor: this.addTarget
     }
     this.addTarget = ''
   }
@@ -107,8 +108,11 @@ export default class extends React.Component {
   }
   addHandler() {
     this.setState({
-      color: this.state.color.push(this.addTarget)
+      addColor: this.addTarget
     })
+    let addColor = this.addTarget
+    let arryColor =  this.state.color
+    arryColor.push(addColor)
   }
   render () {
     console.log('本体', this.state.color)
