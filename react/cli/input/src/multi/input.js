@@ -17,7 +17,6 @@ export default class extends React.Component {
     }
     this.result = {}
     this.isOks = {}
-    this.flag = {}
   }
   handler (e) {
     // isOksオブジェクトにe.dispatchNameという箱を作り、そこにe.dispatchConvatedを代入する
