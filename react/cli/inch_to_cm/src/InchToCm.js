@@ -1,43 +1,47 @@
-import React, {Component} from 'react'
-import ValueInput from './ValueInput'
+import React from 'react'
+import ValueInput from "./ValueInput"
 
-// インチセンチの変換コンポーネント
-export default class InchToCm extends Component {
-  constructor (props) {
+export default class extends React.Component {
+  constructor(props) {
     super(props)
     this.state = {
       inch: '',
       cm: ''
     }
   }
+
   inchChanged (e) {
-    let inch = e.dispatch
-    let cm = inch * 2.54
+    let value = e.dispatchValue
     this.setState({
-      inch: inch,
-      cm: cm
+      inch: value,
+      cm: Math.floor((value * 2.45) * 100) / 100
     })
   }
   cmChanged (e) {
-    let cm = e.dispatch
-    let inch = cm * 2.54
+    let value = e.dispatchValue
     this.setState({
-      inch: inch,
-      cm: cm
+      inch: Math.floor((value * 2.45) * 100) / 100,
+      cm: value
     })
   }
   render () {
     return (
       <div>
         <ValueInput
-          title='inch'
+          title="inch:"
+          name="inch"
           value={this.state.inch}
-          onChange={e => this.inchChanged(e)}
+          onChange={(e) => {
+            this.inchChanged(e)
+          }}
         />
         <ValueInput
-          title='cm'
+          title="cm:"
+          name="cm"
           value={this.state.cm}
-          onChange={e => this.cmChanged(e)}
+          onChange={(e) => {
+            this.cmChanged(e)
+          }}
         />
       </div>
     )

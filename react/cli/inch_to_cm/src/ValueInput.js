@@ -7,20 +7,15 @@ export default class extends React.Component {
       value: this.props.value
     }
   }
-  handler(e) {
+  handler (e) {
     let target = e.target.value
-    // 整数しか出さないようにする
-    let shaping = target.replace(/[^0-9.]+/g, '')
-    this.setState({
-      value: shaping
+    let name = e.target.name
+    // 数字しか入れない正規表現
+    let targetValue = target.replace(/[^0-9.]+/g, '')
+    this.props.onChange({
+      dispatchValue: targetValue,
+      dispatchName: name
     })
-    // shaiping変数をpropsで親に渡す
-    if (this.props.onChange) {
-      this.props.onChange({
-        target: this,
-        dispatch: shaping
-      })
-    }
   }
   // this.props.onChange の情報が変更されたのをキャッチして、setStateさせる
   componentWillReceiveProps(newProps) {
@@ -34,6 +29,7 @@ export default class extends React.Component {
         <h2>{ this.props.title }</h2>
         <input
           type="text"
+          name={this.props.name}
           value={this.state.value}
           onChange={(e) => {
             this.handler(e)
