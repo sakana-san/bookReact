@@ -57,7 +57,6 @@ class ColorBox extends React.Component {
     })
   }
   render () {
-    console.log('colorBox', this.state.color)
     let border = ''
     let label = ''
     let currentTarget = this.state.color[this.state.index]
@@ -97,25 +96,50 @@ class ColorBox extends React.Component {
 export default class extends React.Component {
   constructor(props) {
     super(props)
-    this.state ={
-      color: ['red', 'yellow', 'Orange', 'green'],
-      addColor: this.addTarget
+    this.state = {
+      color: ['red', 'yellow', 'orange', 'green'],
     }
     this.addTarget = ''
+    this.deleteTarget = ''
   }
   handler (e) {
     this.addTarget = e.dispatchValue
+    this.deleteTarget = e.dispatchValue
   }
   addHandler() {
-    this.setState({
-      addColor: this.addTarget
-    })
     let addColor = this.addTarget
     let arryColor =  this.state.color
     arryColor.push(addColor)
+    this.setState({
+      color: arryColor
+    })
+  }
+  deleteHandler () {
+    // todo クリック内ではindexOfだけを入れて、クリック街でforEachやcheckValueする
+    let that = this
+    let deleteColor = this.deleteTarget
+    let arryColor =  this.state.color
+    let checkColor = arryColor.indexOf(deleteColor)
+    let tmpData = []
+    if (this.addTarget !== '') {
+      arryColor.forEach(function (d, i) {
+        if (d === deleteColor) {
+          arryColor.splice(i, 1)
+          that.setState({
+            color: arryColor,
+          })
+        }
+      })
+      if (arryColor.length > 0 && checkColor === -1) {
+        window.alert('表示されているcolorを入力してください')
+      } else if ((arryColor.length - 1) <= 0 && checkColor === -1) {
+        window.alert('値がありません')
+      }
+    } else {
+      window.alert('削除するcolorを入力してください')
+    }
   }
   render () {
-    console.log('本体', this.state.color)
     return (
       <div>
         <ColorBox
@@ -132,6 +156,11 @@ export default class extends React.Component {
             this.addHandler()
           }}
         >色を追加する</button>
+        <button
+          onClick={(e) => {
+            this.deleteHandler(e)
+          }}
+        >削除する</button>
       </div>
     )
   }
