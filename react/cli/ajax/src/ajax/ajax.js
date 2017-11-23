@@ -1,5 +1,5 @@
 import React from 'react'
-import './App.css'
+import '../App.css'
 // superAgentの利用を制限
 import request from 'superagent'
 
