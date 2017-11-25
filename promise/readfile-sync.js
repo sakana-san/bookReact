@@ -1,5 +1,51 @@
 const fs = require('fs')
 
+// function readFile_pr (fname) {
+//   return new Promise((resolve, reject) => {
+//     fs.readFile(fname, 'utf-8', (err, data) => {
+//       resolve(data)
+//     })
+//   })
+// }
+//
+// readFile_pr('A.txt')
+//   .then((text) => {
+//     console.log('aを読み込みました', text)
+//     return readFile_pr('B.txt')
+//   })
+//   .then((text) => {
+//     console.log('bを読み込みました', text)
+//     return readFile_pr('c.txt')
+//   })
+//   .then((text) => {
+//     console.log('cを読み込みました', text)
+//   })
+
+function Toin (name) {
+  return new Promise((resolve, reject) => {
+    let str = name
+    resolve(str)
+    if (!str) {
+      reject('error')
+    }
+  })
+}
+
+// Toin ('根尾選手')
+//   .then((str) => {
+//     console.log('でるか', str)
+//     return Toin('藤原選手')
+//   })
+//   .then((str) => {
+//     console.log('でるか2', str)
+//   })
+
+async function readAll() {
+  const a = await Toin ('根尾選手')
+    console.log(a)
+}
+
+readAll()
 // function readeFile_pr(fname) {
 //   return new Promise((resolve) => {
 //     fs.readFile(fname, 'utf-8', (err, s) => {
@@ -94,20 +140,20 @@ const fs = require('fs')
 //   console.log(error)
 // })
 
-let result1 = 1 + 2
-let result2 = result1 + 100
-let doSomething1 = function () {
-  result2
-}
-
-let doSomething2 = function () {
-  console.log(result2)
-}
-
-let doSomething3 = function () {
-  console.log(result2)
-}
-
-doSomething1()
-doSomething2()
-doSomething3()
+// let result1 = 1 + 2
+// let result2 = result1 + 100
+// let doSomething1 = function () {
+//   result2
+// }
+//
+// let doSomething2 = function () {
+//   console.log(result2)
+// }
+//
+// let doSomething3 = function () {
+//   console.log(result2)
+// }
+//
+// doSomething1()
+// doSomething2()
+// doSomething3()
