@@ -1,5 +1,6 @@
 import React from 'react'
 
+// todo 親要素をColorBoxの要素にして,InputColor, ClickColorのComponentを書く
 class AddColor extends React.Component {
   constructor(props) {
     super(props)

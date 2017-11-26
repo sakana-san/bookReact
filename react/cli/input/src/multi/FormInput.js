@@ -45,7 +45,7 @@ export default class extends React.Component {
       dispatchValue: filterValue,
       dispatchConvated: convatedValue
     })
-    }
+  }
   checkMessage() {
     let check = ''
 
