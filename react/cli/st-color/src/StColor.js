@@ -1,14 +1,55 @@
 import React from 'react'
 
 
+class InputAddColors extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      value: '',
+      check: ''
+    }
+  }
+  changeHandler (e) {
+    let target = e.target.value
+    let targetValue = target.replace(/[^a-zA-z+]/g, '')
+    let pattern = /^[a-zA-z+]+$/
+    let checkTarget = pattern.test(targetValue)
+    this.setState({
+      value: targetValue,
+      check: checkTarget
+    })
+    this.props.onChange({
+      dispatchValue: targetValue,
+      dispatchCheck: checkTarget
+    })
+  }
+  render () {
+    return (
+      <div>
+        <input
+          type="text"
+          value={this.state.value}
+          onChange={(e) => {
+            this.changeHandler(e)
+          }}
+        />
+      </div>
+    )
+  }
+}
+
+
 export default class extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       index: 0,
       colors: ['red', 'yellow', 'skyblue', 'pink'],
-      clickFlag: false
+      clickFlag: false,
+      deletClickFlag: false,
     }
+    this.addInputColors = ''
+    this.deleteColors = ''
   }
   bgClickHandler (e) {
     let color = e.target.style.backgroundColor
@@ -17,6 +58,29 @@ export default class extends React.Component {
       index: colorIndex,
       clickFlag: true
     })
+  }
+  changeHandler (e) {
+    this.addInputColors = e.dispatchValue
+  }
+  clickHandler () {
+    this.state.colors.push(this.addInputColors)
+    this.setState({
+      colors: this.state.colors
+    })
+  }
+  deleteHandler () {
+    let that = this
+    let arrayColors = this.state.colors
+    this.deleteColors = this.state.colors[this.state.index]
+    arrayColors.some(function (d, i) {
+      if (that.deleteColors === d) {
+        arrayColors.splice(i, 1)
+        that.setState({
+          colors: arrayColors
+        })
+      }
+    })
+    // todo validate機能をつける
   }
   render () {
     let items = this.state.colors.map((value, index) => {
@@ -47,179 +111,25 @@ export default class extends React.Component {
         <ul>
           { items }
         </ul>
+        <InputAddColors
+          onChange={(e) => {
+            this.changeHandler(e)
+          }}
+        />
+        <button
+          onClick={() => {
+            this.clickHandler()
+          }}
+        >色を追加する</button>
+        <button
+          onClick={() => {
+            this.deleteHandler()
+          }}
+        >削除する</button>
       </div>
     )
   }
 }
-
-
-
-// // todo 親要素をColorBoxの要素にして,InputColor, ClickColorのComponentを書く
-// class AddColor extends React.Component {
-//   constructor(props) {
-//     super(props)
-//     this.state = {
-//       color: this.props.color,
-//       value: '',
-//       converted: ''
-//     }
-//   }
-//   handler (e) {
-//     let target = e.target.value
-//     let targetValue = target.replace(/[^a-zA-z+]/g, '')
-//     let pattern = /^[a-zA-z+]+$/
-//     let shaping = pattern.test(targetValue)
-//     this.setState({
-//       value: targetValue,
-//       converted: shaping
-//     })
-//     this.props.onChange({
-//       dispatchValue: targetValue,
-//       dispatchConverted: shaping
-//     })
-//   }
-//   render () {
-//     return (
-//       <div>
-//         <input
-//           type="text"
-//           value={ this.state.value }
-//           onChange={(e) => {
-//             this.handler(e)
-//           }}
-//         />
-//       </div>
-//     )
-//   }
-// }
-//
-//
-// class ColorBox extends React.Component {
-//   constructor(props) {
-//     super(props)
-//     this.state = {
-//       index: '',
-//       color: this.props.color
-//     }
-//   }
-//   handler(d) {
-//     let target = this.state.color.indexOf(d)
-//     this.setState({
-//       index: target
-//     })
-//     this.props.onClick({
-//       dispatchColor: this.state.color,
-//     })
-//   }
-//   render () {
-//     let border = ''
-//     let label = ''
-//     let currentTarget = this.state.color[this.state.index]
-//     let item = this.state.color.map((d, i) => {
-//       if (currentTarget === d) {
-//         border = '1px solid #000'
-//         label = d
-//       } else {
-//         label = ''
-//         border = 'none'
-//       }
-//       return (
-//         <li
-//           style={{
-//             width: '40px',
-//             height: '40px',
-//             backgroundColor: d,
-//             border: border
-//           }}
-//           key={i}
-//           onClick={() => {
-//             this.handler(d)
-//           }}
-//         >
-//           { label }
-//         </li>
-//       )
-//     })
-//     return (
-//       <ul>{ item }</ul>
-//     )
-//   }
-// }
-//
-//
-//
-// export default class extends React.Component {
-//   constructor(props) {
-//     super(props)
-//     this.state = {
-//       color: ['red', 'yellow', 'orange', 'green'],
-//     }
-//     this.addTarget = ''
-//     this.deleteTarget = ''
-//   }
-//   handler (e) {
-//     this.addTarget = e.dispatchValue
-//     this.deleteTarget = e.dispatchValue
-//   }
-//   addHandler() {
-//     let addColor = this.addTarget
-//     let arryColor =  this.state.color
-//     arryColor.push(addColor)
-//     this.setState({
-//       color: arryColor
-//     })
-//   }
-//   deleteHandler () {
-//     // todo クリック内ではindexOfだけを入れて、クリック街でforEachやcheckValueする
-//     let that = this
-//     let deleteColor = this.deleteTarget
-//     let arryColor =  this.state.color
-//     let checkColor = arryColor.indexOf(deleteColor)
-//     let tmpData = []
-//     if (this.addTarget !== '') {
-//       arryColor.forEach(function (d, i) {
-//         if (d === deleteColor) {
-//           arryColor.splice(i, 1)
-//           that.setState({
-//             color: arryColor,
-//           })
-//         }
-//       })
-//       if (arryColor.length > 0 && checkColor === -1) {
-//         window.alert('表示されているcolorを入力してください')
-//       } else if ((arryColor.length - 1) <= 0 && checkColor === -1) {
-//         window.alert('値がありません')
-//       }
-//     } else {
-//       window.alert('削除するcolorを入力してください')
-//     }
-//   }
-//   render () {
-//     return (
-//       <div>
-//         <ColorBox
-//           color={ this.state.color }
-//         />
-//         <AddColor
-//           color={ this.state.color }
-//           onChange={(e) => {
-//             this.handler(e)
-//           }}
-//         />
-//         <button
-//           onClick={() => {
-//             this.addHandler()
-//           }}
-//         >色を追加する</button>
-//         <button
-//           onClick={(e) => {
-//             this.deleteHandler(e)
-//           }}
-//         >削除する</button>
-//       </div>
-//     )
-//   }
-// }
 
 
 // ver.1
