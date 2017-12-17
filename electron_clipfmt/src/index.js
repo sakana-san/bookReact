@@ -29,19 +29,22 @@ export default class App extends React.Component {
         text: this.convertText(this.state.text)
       })
     }
-    if(!this.state.isWatch && this.state.isConvert) {
-      clearInterval(this.tick())
-      this.setState({
-        text: this.convertText(this.state.text)
-      })
-    }
-
+  }
+  normalMotion() {
   }
   changeState(e) {
     let name = e.target.name
     this.setState({
       [name]: !this.state[name],
     })
+    if (name === 'isConvert') {
+      if (!this.state.isWatch) {
+        clearInterval(this.tick())
+        this.setState({
+          text: this.convertText(this.state.text)
+        })
+      }
+    }
   }
   onChangeText(e) {
     let text = e.target.value
