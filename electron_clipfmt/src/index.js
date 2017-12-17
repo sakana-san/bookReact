@@ -30,8 +30,6 @@ export default class App extends React.Component {
       })
     }
   }
-  normalMotion() {
-  }
   changeState(e) {
     let name = e.target.name
     this.setState({
