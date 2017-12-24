@@ -1,54 +1,52 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-const { clipboard } = require('electron')
 
 
-export default class App extends React.Component {
+export class App extends React.Component{
   constructor(props) {
     super(props)
     this.state = {
-      isConvert: false,
-      isWatch: false,
-      text: '',
-      convert: '',
-      name: ''
+      value: ''
     }
-    setInterval(function () {
-      this.tick()
-    }.bind(this), 1000)
+    this.stringFlag = false
+    this.setTimeFlag = false
   }
-  convertText(str) {
+  patternValue () {
+    let str = this.state.value
     let pattern = str.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (s) {
       return String.fromCharCode(s.charCodeAt(0) - 0xFEE0)
     })
     return pattern
   }
-  tick() {
-    if (this.state.isWatch) {
-      this.setState({
-        text: this.convertText(this.state.text)
-      })
+  handler (e) {
+    let str = e.target.value
+    this.setState({
+      value: str
+    })
+  }
+  checkHandler (e) {
+    this.stringFlag = e.target.checked
+    this.setState({
+      value: (this.stringFlag) ? this.patternValue() : this.state.value
+    })
+  }
+  setTimeHandler (e) {
+    this.setTimeFlag = e.target.checked
+    setInterval(function () {
+      this.tick(e)
+    }.bind(this), 1000)
+    if (!this.setTimeFlag) {
+      this.clearSetTime()
     }
   }
-  changeState(e) {
-    let name = e.target.name
+  tick () {
     this.setState({
-      [name]: !this.state[name],
+      value: (this.setTimeFlag) ? this.patternValue() : this.state.value
     })
-    if (name === 'isConvert') {
-      if (!this.state.isWatch) {
-        clearInterval(this.tick())
-        this.setState({
-          text: this.convertText(this.state.text)
-        })
-      }
-    }
   }
-  onChangeText(e) {
-    let text = e.target.value
-    this.setState({
-      text: text
-    })
+  clearSetTime () {
+    console.log('off時にclreatInterval')
+    clearInterval(this.tick())
   }
   render () {
     const taStyle = {
@@ -65,24 +63,21 @@ export default class App extends React.Component {
                 <ul className='list-group'>
                   <li className='list-group-item'>
                     <label>
-                      <input type='checkbox'
-                        name='isWatch'
-                        // onChangeする
-                        checked={ this.state.isWatch }
+                      <input
                         onChange={(e) => {
-                          this.changeState(e)
+                          this.setTimeHandler(e)
                         }}
+                        type="checkbox"
                       />
                       監視を有効に
                     </label>
                   </li>
                   <li className='list-group-item'>
                     <label>
-                      <input type='checkbox'
-                        name='isConvert'
-                        checked={ this.state.isConvert }
+                      <input
+                        type="checkbox"
                         onChange={(e) => {
-                          this.changeState(e)
+                          this.checkHandler(e)
                         }}
                       />
                       全角英数を半角に
@@ -93,14 +88,14 @@ export default class App extends React.Component {
             </div>
             <div className='pane'>
               <div className='padded-more'>
-                クリップボード:<br />
+                クリップボード:
                 <textarea
                   style={taStyle}
-                  value={this.state.text}
+                  value={this.state.value}
                   onChange={(e) => {
-                    this.onChangeText(e)
+                    this.handler(e)
                   }}
-                />
+                ></textarea>
               </div>
             </div>
           </div>
