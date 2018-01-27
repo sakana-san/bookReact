@@ -8,8 +8,25 @@ export class App extends React.Component{
     this.state = {
       value: ''
     }
-    this.stringFlag = false
-    this.setTimeFlag = false
+  }
+  setTimerHandler (e) {
+    let checkFlag = false
+    checkFlag = e.target.checked
+    setInterval(() => {
+      this.tick(checkFlag)
+    }, 1000)
+    if (!checkFlag) {
+      this.clearSetTimer()
+    }
+  }
+  tick (checkFlag) {
+    this.setState({
+      value: (checkFlag) ? this.patternValue() : this.state.value
+    })
+  }
+  clearSetTimer () {
+    console.log('off時にclreatInterval')
+    clearInterval(this.tick())
   }
   patternValue () {
     let str = this.state.value
@@ -18,35 +35,16 @@ export class App extends React.Component{
     })
     return pattern
   }
-  handler (e) {
-    let str = e.target.value
+  checkboxHandler (e) {
     this.setState({
-      value: str
+      value: (e.target.checked) ? this.patternValue() : this.state.value
     })
   }
-  checkHandler (e) {
-    this.stringFlag = e.target.checked
+  textChangeHandler (e) {
+    let target = e.target.value
     this.setState({
-      value: (this.stringFlag) ? this.patternValue() : this.state.value
+      value: target
     })
-  }
-  setTimeHandler (e) {
-    this.setTimeFlag = e.target.checked
-    setInterval(function () {
-      this.tick(e)
-    }.bind(this), 1000)
-    if (!this.setTimeFlag) {
-      this.clearSetTime()
-    }
-  }
-  tick () {
-    this.setState({
-      value: (this.setTimeFlag) ? this.patternValue() : this.state.value
-    })
-  }
-  clearSetTime () {
-    console.log('off時にclreatInterval')
-    clearInterval(this.tick())
   }
   render () {
     const taStyle = {
@@ -64,8 +62,8 @@ export class App extends React.Component{
                   <li className='list-group-item'>
                     <label>
                       <input
-                        onChange={(e) => {
-                          this.setTimeHandler(e)
+                        onClick={(e) => {
+                          this.setTimerHandler(e)
                         }}
                         type="checkbox"
                       />
@@ -77,7 +75,7 @@ export class App extends React.Component{
                       <input
                         type="checkbox"
                         onChange={(e) => {
-                          this.checkHandler(e)
+                          this.checkboxHandler(e)
                         }}
                       />
                       全角英数を半角に
@@ -93,7 +91,7 @@ export class App extends React.Component{
                   style={taStyle}
                   value={this.state.value}
                   onChange={(e) => {
-                    this.handler(e)
+                    this.textChangeHandler(e)
                   }}
                 ></textarea>
               </div>
