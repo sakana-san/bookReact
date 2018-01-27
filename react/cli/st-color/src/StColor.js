@@ -1,206 +1,240 @@
 import React from 'react'
-
-
-class InputAddColors extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      value: '',
-      check: ''
-    }
-  }
-  changeHandler (e) {
-    let target = e.target.value
-    let targetValue = target.replace(/[^a-zA-z+]/g, '')
-    let pattern = /^[a-zA-z+]+$/
-    let checkTarget = pattern.test(targetValue)
-    this.setState({
-      value: targetValue,
-      check: checkTarget
-    })
-    this.props.onChange({
-      dispatchValue: targetValue,
-      dispatchCheck: checkTarget
-    })
-  }
-  render () {
-    return (
-      <div>
-        <input
-          type="text"
-          value={this.state.value}
-          onChange={(e) => {
-            this.changeHandler(e)
-          }}
-        />
-      </div>
-    )
-  }
-}
-
+import FormInput from './FormInput'
+import ButtonList from './ButtonList'
 
 export default class extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       index: 0,
-      colors: ['red', 'yellow', 'skyblue', 'pink'],
-      clickFlag: false,
-      deletClickFlag: false,
+      colors: ['red', 'blue', 'orange', 'yellow', 'skyblue'],
+      addColors: '',
+      deleteColors: '',
+      flag: false
     }
-    this.addInputColors = ''
-    this.deleteColors = ''
   }
-  bgClickHandler (e) {
-    let color = e.target.style.backgroundColor
-    let colorIndex = this.state.colors.indexOf(color)
-    this.setState({
-      index: colorIndex,
-      clickFlag: true
+  handler (e) {
+    // ----------------------------------------------------------- metods: liタグをクリックした時の処理
+    let target = e.target.style.backgroundColor
+    let index = this.state.colors.indexOf(target)
+    this.setState ({
+      index: index,
+      deleteColors: target,
+      flag: true
     })
   }
   changeHandler (e) {
-    this.addInputColors = e.dispatchValue
-  }
-  clickHandler () {
-    this.state.colors.push(this.addInputColors)
+    // ----------------------------------------------------------- metods: FormInput.jsのdispatchを受け取る
     this.setState({
-      colors: this.state.colors
+      addColors: e.dispatchValue,
+      deleteColors: e.dispatchValue
     })
   }
-  deleteHandler () {
-    let that = this
-    let arrayColors = this.state.colors
-    this.deleteColors = this.state.colors[this.state.index]
-    arrayColors.some(function (d, i) {
-      if (that.deleteColors === d) {
-        arrayColors.splice(i, 1)
-        that.setState({
-          colors: arrayColors
-        })
+  checkClick (e) {
+    // ----------------------------------------------------------- metods: ButtonList.jsのdispatchを受け取る
+    if (e.dispatchAddColors) {
+      let addColor = e.dispatchAddColors
+      this.state.colors.push(addColor)
+      this.setState({
+        colors: this.state.colors
+      })
+    } else {
+      let deleteColor = e.dispatchDeleteColors
+      if (deleteColor = this.state.deleteColors) {
+        this.state.colors.splice(this.state.index, 1)
       }
-    })
-    // todo validate機能をつける
+      this.setState({
+        colors: this.state.colors
+      })
+    }
   }
   render () {
-    let items = this.state.colors.map((value, index) => {
-      let border = ''
+    let lines = this.state.colors.map((d, i) => {
+      let selectBorder = ''
       let colorName = ''
-      if (this.state.colors[this.state.index] === value && this.state.clickFlag) {
-        border = '1px solid #000'
-        colorName = value
+      let selectColors = this.state.colors[this.state.index]
+      if (selectColors === d && this.state.flag) {
+        selectBorder = '2px solid #000'
+        colorName = selectColors
       }
       return (
-        <li
-          style = {{
-            'width': '50px',
-            'height': '50px',
-            'backgroundColor': value,
-            'border': border,
-            'cursor': 'pointer'
-          }}
-          key={index}
-          onClick={(e) => {
-            this.bgClickHandler(e)
-          }}
-        >{ colorName }</li>
+        <ul>
+          <li
+            style={{
+              width: '50px',
+              height: '50px',
+              backgroundColor: d,
+              border: selectBorder
+            }}
+            key={i}
+            onClick={(e) => {
+              this.handler(e)
+            }}
+          >
+            { colorName }
+            </li>
+        </ul>
       )
     })
     return (
       <div>
-        <ul>
-          { items }
-        </ul>
-        <InputAddColors
+        { lines }
+        <FormInput
           onChange={(e) => {
             this.changeHandler(e)
           }}
         />
-        <button
-          onClick={() => {
-            this.clickHandler()
+        <ButtonList
+          text='追加'
+          colors={this.state.colors}
+          addColors={this.state.addColors}
+          onClick={(e) => {
+            this.checkClick(e)
           }}
-        >色を追加する</button>
-        <button
-          onClick={() => {
-            this.deleteHandler()
+        />
+        <ButtonList
+          text='削除'
+          colors={this.state.colors}
+          deleteColors={this.state.deleteColors}
+          onClick={(e) => {
+            this.checkClick(e)
           }}
-        >削除する</button>
+        />
       </div>
     )
   }
 }
 
 
-// ver.1
+
+// ver.1 同じファイルで実装している
 // import React from 'react'
 //
-// class ColorBox extends React.Component {
+// class InputAddColors extends React.Component {
 //   constructor(props) {
 //     super(props)
-//     this. state = {
-//       index: 0,
-//       colors: ['red', 'blue', 'green', 'pink', 'yellow'],
-//       flag: false
+//     this.state = {
+//       value: '',
+//       check: ''
 //     }
 //   }
-//   handler (color) {
-//     let i = this.state.colors.indexOf(color)
-//     // 押下したタイミングでindexをsetStateしてデータを更新
+//   changeHandler (e) {
+//     let target = e.target.value
+//     let targetValue = target.replace(/[^a-zA-z+]/g, '')
+//     let pattern = /^[a-zA-z+]+$/
+//     let checkTarget = pattern.test(targetValue)
 //     this.setState({
-//       index: i,
-//       flag: true,
+//       value: targetValue,
+//       check: checkTarget
+//     })
+//     this.props.onChange({
+//       dispatchValue: targetValue,
+//       dispatchCheck: checkTarget
 //     })
 //   }
 //   render () {
-//     let items = this.state.colors.map((d, i) => {
-//       // ここで初期値設定しないと、全要素にborderがついてしまう
-//       let checkStyle = {
-//         target: '',
-//         border: '',
-//         label: ''
-//       }
-//       checkStyle.target =  (i >= 0 && this.state.flag === true) ? this.state.colors[this.state.index] : ''
-//       if (d === checkStyle.target) {
-//         checkStyle.border = '2px solid #000'
-//         checkStyle.label = d
-//       }
-//       return (
-//         <li
-//           key = {i}
-//           style = {{
-//             'width': '50px',
-//             'height': '50px',
-//             'backgroundColor': d,
-//             'border': checkStyle.border,
-//             'cursor': 'pointer'
-//           }}
-//           onClick={() => {
-//             this.handler(d)
-//           }}
-//         >
-//           <p
-//             style = {{
-//               'marginLeft': '60px',
-//               'color': d,
-//             }}
-//           >{ checkStyle.label }</p>
-//         </li>
-//       )
-//     })
 //     return (
-//       <ul>
-//         { items }
-//       </ul>
+//       <div>
+//         <input
+//           type="text"
+//           value={this.state.value}
+//           onChange={(e) => {
+//             this.changeHandler(e)
+//           }}
+//         />
+//       </div>
 //     )
 //   }
 // }
-//
-//
+
 // export default class extends React.Component {
+//   constructor(props) {
+//     super(props)
+//     this.state = {
+//       index: 0,
+//       colors: ['red', 'yellow', 'skyblue', 'pink'],
+//       clickFlag: false,
+//       deletClickFlag: false,
+//     }
+//     this.addInputColors = ''
+//     this.deleteColors = ''
+//   }
+//   bgClickHandler (e) {
+//     let color = e.target.style.backgroundColor
+//     let colorIndex = this.state.colors.indexOf(color)
+//     this.setState({
+//       index: colorIndex,
+//       clickFlag: true
+//     })
+//   }
+//   changeHandler (e) {
+//     this.addInputColors = e.dispatchValue
+//   }
+//   clickHandler () {
+//     this.state.colors.push(this.addInputColors)
+//     this.setState({
+//       colors: this.state.colors
+//     })
+//   }
+//   deleteHandler () {
+//     let that = this
+//     let arrayColors = this.state.colors
+//     this.deleteColors = this.state.colors[this.state.index]
+//     arrayColors.some(function (d, i) {
+//       if (that.deleteColors === d) {
+//         arrayColors.splice(i, 1)
+//         that.setState({
+//           colors: arrayColors
+//         })
+//       }
+//     })
+//     // todo validate機能をつける
+//   }
 //   render () {
+//     let items = this.state.colors.map((value, index) => {
+//       let border = ''
+//       let colorName = ''
+//       if (this.state.colors[this.state.index] === value && this.state.clickFlag) {
+//         border = '1px solid #000'
+//         colorName = value
+//       }
+//       return (
+//         <li
+//           style = {{
+//             'width': '50px',
+//             'height': '50px',
+//             'backgroundColor': value,
+//             'border': border,
+//             'cursor': 'pointer'
+//           }}
+//           key={index}
+//           onClick={(e) => {
+//             this.bgClickHandler(e)
+//           }}
+//         >{ colorName }</li>
+//       )
+//     })
 //     return (
-//       <ColorBox />
+//       <div>
+//         <ul>
+//           { items }
+//         </ul>
+//         <InputAddColors
+//           onChange={(e) => {
+//             this.changeHandler(e)
+//           }}
+//         />
+//         <button
+//           onClick={() => {
+//             this.clickHandler()
+//           }}
+//         >色を追加する</button>
+//         <button
+//           onClick={() => {
+//             this.deleteHandler()
+//           }}
+//         >削除する</button>
+//       </div>
 //     )
 //   }
 // }
