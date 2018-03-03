@@ -1,28 +1,28 @@
 import React from 'react'
-import ValueInput from "./ValueInput"
+import ValueInput from './ValueInput'
 
 export default class extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      inch: '',
-      cm: ''
+      inch: 0,
+      cm: 0
     }
   }
-
   inchChanged (e) {
-    let value = e.dispatchValue
     this.setState({
-      inch: value,
-      cm: Math.floor((value * 2.45) * 100) / 100
+      cm: this.shape(e.dispatchvalue * 2.45),
+      inch: e.dispatchvalue
     })
   }
   cmChanged (e) {
-    let value = e.dispatchValue
     this.setState({
-      inch: Math.floor((value * 2.45) * 100) / 100,
-      cm: value
+      cm: e.dispatchvalue,
+      inch: this.shape(e.dispatchvalue * 2.45)
     })
+  }
+  shape (num) {
+    return num.toFixed(2)
   }
   render () {
     return (
